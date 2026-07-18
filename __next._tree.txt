@@ -1,4 +1,0 @@
-:HL["/_next/static/chunks/0q20nbjji8wq_.css","style"]
-:HL["/heider-portrait.jpg","image"]
-:HL["/heider-poster-presentation.jpg","image"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"QNchTFNu9XeN47Tvo-gBq"}
