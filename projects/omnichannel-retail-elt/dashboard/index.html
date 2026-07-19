@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <title>Interactive Omnichannel Dashboard | Heider Al Mashalah</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="description" content="An interactive public dashboard built from aggregated synthetic omnichannel retail and last-mile delivery data.">
+  <meta property="og:title" content="Interactive Omnichannel Retail Dashboard">
+  <meta property="og:description" content="Explore synthetic retail, customer, delivery, and pipeline-performance measures in a free public web companion.">
+  <meta property="og:image" content="https://heidermash.github.io/images/og.png">
+  <link rel="icon" href="../../../favicon.svg">
+  <link rel="stylesheet" href="../../../assets/css/main.css">
+  <link rel="stylesheet" href="../../../assets/css/custom.css">
+  <noscript><link rel="stylesheet" href="../../../assets/css/noscript.css"></noscript>
+</head>
+<body class="dashboard-page">
+  <a class="skip-link" href="#dashboard">Skip to dashboard</a>
+  <nav id="site-nav" aria-label="Dashboard navigation">
+    <a class="brand" href="../../../index.html#home">HAM<span>.</span></a>
+    <div class="nav-links"><a href="#dashboard">Dashboard</a><a href="../">Case study</a><a href="../../../index.html#work">Portfolio home</a></div>
+  </nav>
+
+  <main id="wrapper">
+    <section class="dashboard-hero">
+      <div class="inner">
+        <p class="eyebrow">Interactive web companion · Aggregated synthetic data</p>
+        <h1>Omnichannel Performance Dashboard</h1>
+        <p class="lead">Explore retail performance, delivery operations, customer and product patterns, and pipeline controls across a two-and-a-half-year synthetic operating period.</p>
+        <p class="dashboard-disclosure"><b>Public web version:</b> this dashboard reproduces the analytical questions and governed measures of the local Power BI Desktop project using browser-native charts. It is not a Power BI Service embed and contains no private or row-level customer data.</p>
+      </div>
+    </section>
+
+    <section id="dashboard" class="dashboard-app" aria-labelledby="dashboard-title">
+      <h2 id="dashboard-title" class="visually-hidden">Interactive dashboard controls and views</h2>
+      <div class="dashboard-toolbar" role="group" aria-label="Dashboard filters">
+        <label>Year<select id="year-filter"><option value="all">All years</option></select></label>
+        <label>Channel<select id="channel-filter"><option value="all">All channels</option></select></label>
+        <button id="reset-filters" class="button" type="button">Reset filters</button>
+        <p id="dashboard-status" class="dashboard-status" role="status" aria-live="polite">Loading verified aggregate data…</p>
+      </div>
+
+      <div class="dashboard-tabs" role="tablist" aria-label="Dashboard views">
+        <button id="tab-overview" type="button" role="tab" aria-selected="true" aria-controls="view-overview" tabindex="0" data-view="overview">Executive overview</button>
+        <button id="tab-delivery" type="button" role="tab" aria-selected="false" aria-controls="view-delivery" tabindex="-1" data-view="delivery">Delivery operations</button>
+        <button id="tab-customer" type="button" role="tab" aria-selected="false" aria-controls="view-customer" tabindex="-1" data-view="customer">Customer &amp; product</button>
+        <button id="tab-audit" type="button" role="tab" aria-selected="false" aria-controls="view-audit" tabindex="-1" data-view="audit">Pipeline audit</button>
+      </div>
+
+      <div id="dashboard-loading" class="dashboard-loading">Preparing the dashboard…</div>
+
+      <section id="view-overview" class="dashboard-view" role="tabpanel" aria-labelledby="tab-overview" tabindex="0" hidden>
+        <div class="dashboard-kpis" role="group" aria-label="Executive key performance indicators">
+          <article class="dashboard-kpi"><span>Net sales</span><b id="kpi-sales">—</b><small id="kpi-sales-note">Filtered period</small></article>
+          <article class="dashboard-kpi"><span>Gross margin</span><b id="kpi-margin">—</b><small id="kpi-margin-note">Margin rate</small></article>
+          <article class="dashboard-kpi"><span>Orders</span><b id="kpi-orders">—</b><small id="kpi-orders-note">Accepted orders</small></article>
+          <article class="dashboard-kpi"><span>On-time delivery</span><b id="kpi-ontime">—</b><small id="kpi-ontime-note">Delivered orders</small></article>
+          <article class="dashboard-kpi"><span>Average delivery cycle</span><b id="kpi-cycle">—</b><small>Minutes, weighted</small></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="dashboard-card wide"><div class="dashboard-card-head"><h2>Net-sales trend</h2><p>Monthly filtered performance</p></div><canvas id="sales-trend" role="img" aria-label="Monthly net-sales trend"></canvas><p id="sales-trend-summary" class="chart-summary"></p></article>
+          <article class="dashboard-card"><div class="dashboard-card-head"><h2>Channel mix</h2><p>Net sales by channel</p></div><canvas id="channel-mix" role="img" aria-label="Net sales by channel"></canvas><p id="channel-mix-summary" class="chart-summary"></p></article>
+          <article class="dashboard-card"><div class="dashboard-card-head"><h2>Recent months</h2><p>Exact filtered values</p></div><div class="dashboard-table-wrap"><table class="dashboard-table"><thead><tr><th>Month</th><th>Orders</th><th>Net sales</th><th>Margin</th></tr></thead><tbody id="monthly-table-body"></tbody></table></div></article>
+        </div>
+      </section>
+
+      <section id="view-delivery" class="dashboard-view" role="tabpanel" aria-labelledby="tab-delivery" tabindex="0" hidden>
+        <div class="dashboard-grid">
+          <article class="dashboard-card"><div class="dashboard-card-head"><h2>On-time delivery</h2><p>Delivered orders by channel</p></div><canvas id="ontime-channel" role="img" aria-label="On-time delivery rate by channel"></canvas><p id="ontime-summary" class="chart-summary"></p></article>
+          <article class="dashboard-card"><div class="dashboard-card-head"><h2>Delivery cycle</h2><p>Weighted average minutes</p></div><canvas id="cycle-channel" role="img" aria-label="Average delivery cycle by channel"></canvas><p id="cycle-summary" class="chart-summary"></p></article>
+          <article class="dashboard-card wide"><div class="dashboard-card-head"><h2>Store service performance</h2><p>Ranked by on-time rate; minimum 100 delivered orders</p></div><canvas id="store-performance" role="img" aria-label="On-time delivery rate by store"></canvas><div class="dashboard-table-wrap"><table class="dashboard-table"><thead><tr><th>Store</th><th>Delivered</th><th>On time</th><th>Rate</th><th>Avg cycle</th></tr></thead><tbody id="store-table-body"></tbody></table></div></article>
+        </div>
+      </section>
+
+      <section id="view-customer" class="dashboard-view" role="tabpanel" aria-labelledby="tab-customer" tabindex="0" hidden>
+        <div class="dashboard-grid">
+          <article class="dashboard-card"><div class="dashboard-card-head"><h2>Customer segments</h2><p>Net sales by synthetic segment</p></div><canvas id="segment-sales" role="img" aria-label="Net sales by customer segment"></canvas><p id="segment-summary" class="chart-summary"></p></article>
+          <article class="dashboard-card"><div class="dashboard-card-head"><h2>Category margin</h2><p>Gross margin by product category</p></div><canvas id="category-margin" role="img" aria-label="Gross margin by product category"></canvas><p id="category-summary" class="chart-summary"></p></article>
+          <article class="dashboard-card wide"><div class="dashboard-card-head"><h2>Product-category detail</h2><p>Filtered synthetic portfolio</p></div><div class="dashboard-table-wrap"><table class="dashboard-table"><thead><tr><th>Category</th><th>Orders</th><th>Units</th><th>Net sales</th><th>Gross margin</th></tr></thead><tbody id="category-table-body"></tbody></table></div></article>
+        </div>
+      </section>
+
+      <section id="view-audit" class="dashboard-view" role="tabpanel" aria-labelledby="tab-audit" tabindex="0" hidden>
+        <div class="audit-grid" role="group" aria-label="Pipeline validation gates">
+          <article class="audit-gate"><span>GATE 01</span><b id="audit-status">—</b><small>Pipeline status</small></article>
+          <article class="audit-gate"><span>GATE 02</span><b id="audit-rows">—</b><small>Physical rows loaded</small></article>
+          <article class="audit-gate"><span>GATE 03</span><b>69 / 69</b><small>dbt tests passed</small></article>
+          <article class="audit-gate"><span>GATE 04</span><b>24</b><small>dbt models built</small></article>
+          <article class="audit-gate"><span>GATE 05</span><b id="audit-entities">—</b><small>Source entities loaded</small></article>
+          <article class="audit-gate"><span>GATE 06</span><b>8</b><small>Airflow tasks succeeded</small></article>
+          <article class="audit-gate"><span>GATE 07</span><b>17</b><small>DAX measures generated</small></article>
+          <article class="audit-gate"><span>GATE 08</span><b id="audit-duration">—</b><small>Warehouse load duration</small></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="dashboard-card"><h2>Source reconciliation</h2><div class="reconciliation-track" aria-hidden="true"><span id="reconciliation-fill"></span></div><p id="reconciliation-summary" class="chart-summary"></p></article>
+          <article class="dashboard-boundary"><h3>Evidence boundary</h3><p><b>All values are synthetic engineering controls.</b> They demonstrate ingestion, modeling, testing, orchestration, and BI workflow design—not observed revenue, customer behaviour, adoption, or operational impact.</p></article>
+        </div>
+      </section>
+    </section>
+
+    <footer class="wrapper style1 align-center"><div class="inner"><p>© 2026 Heider Al Mashalah · <a href="../">Read the ELT case study</a> · <a href="../../../index.html">Portfolio home</a></p></div></footer>
+  </main>
+  <noscript><p class="dashboard-noscript">This interactive dashboard requires JavaScript. The full project evidence remains available in the <a href="../">case study</a>.</p></noscript>
+  <script src="../../../assets/js/omnichannel-dashboard.js"></script>
+</body>
+</html>
