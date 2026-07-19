@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <title>Omnichannel Retail ELT Case Study | Heider Al Mashalah</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="description" content="A local-first data engineering and Power BI portfolio case study using deterministic synthetic omnichannel retail and last-mile delivery data.">
+  <meta property="og:title" content="Omnichannel Retail &amp; Last-Mile Delivery ELT">
+  <meta property="og:description" content="PostgreSQL, dbt, Airflow, and Power BI Desktop—with explicit validation and synthetic-data boundaries.">
+  <meta property="og:image" content="https://heidermash.github.io/images/og.png">
+  <link rel="icon" href="../../favicon.svg">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+  <noscript><link rel="stylesheet" href="../../assets/css/noscript.css"></noscript>
+</head>
+<body class="is-preload case-study-page">
+  <a class="skip-link" href="#overview">Skip to content</a>
+  <nav id="site-nav" aria-label="Case study navigation">
+    <a class="brand" href="../../index.html#home">HAM<span>.</span></a>
+    <div class="nav-links">
+      <a href="#architecture">Architecture</a><a href="#capabilities">Capabilities</a><a href="#report">Power BI</a><a href="#validation">Validation</a><a href="#boundaries">Boundaries</a><a href="../../index.html#work">Portfolio home</a>
+    </div>
+  </nav>
+
+  <main id="wrapper" class="divided">
+    <section id="overview" class="case-hero">
+      <div class="inner">
+        <p class="eyebrow">Portfolio case study · Deterministic synthetic data</p>
+        <h1>Omnichannel Retail &amp; Last-Mile Delivery ELT Platform</h1>
+        <p class="lead">A fully automated local analytics platform that turns source-shaped retail and delivery records into tested dimensional marts, operational evidence, and a generated Power BI Desktop project.</p>
+        <ul class="actions"><li><a href="#architecture" class="button primary large smooth-scroll-middle">Explore the architecture</a></li><li><a href="../../index.html#work" class="button large">Back to portfolio</a></li></ul>
+        <div class="case-kpis" role="group" aria-label="Project evidence summary">
+          <div><b>670,771</b><span>physical source rows reconciled</span></div>
+          <div><b>24</b><span>dbt models built</span></div>
+          <div><b>69</b><span>dbt tests passed</span></div>
+          <div><b>8</b><span>orchestrated pipeline gates</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="wrapper style1 align-center section-pad">
+      <div class="inner">
+        <p class="eyebrow">01 · Architecture</p>
+        <h2>One traceable path from source to decision.</h2>
+        <p class="case-intro">Each layer has a bounded responsibility. Raw records remain auditable, invalid and superseded rows receive reason codes, business logic lives in dbt, and Power BI consumes curated marts rather than calculating around source defects.</p>
+        <div class="pipeline-flow" role="group" aria-label="ELT architecture flow">
+          <article><span>STEP 01</span><h3>Generate</h3><p>Python creates versioned, source-shaped synthetic entities plus ground truth for injected issues.</p></article>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <article><span>STEP 02</span><h3>Load</h3><p>An idempotent batch loader reconciles physical files into local PostgreSQL raw tables.</p></article>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <article><span>STEP 03</span><h3>Transform</h3><p>dbt staging, intermediate, and mart layers type, quarantine, reconcile, and model the data.</p></article>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <article><span>STEP 04</span><h3>Orchestrate</h3><p>Airflow schedules generation, verification, loading, testing, export, and evidence gates.</p></article>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <article><span>STEP 05</span><h3>Analyze</h3><p>A generated PBIP connects Power BI Desktop to curated PostgreSQL marts in Import mode.</p></article>
+        </div>
+        <p class="evidence-note"><b>Reproducibility control:</b> the same manifest is skipped on retry rather than appended again, while dbt still rebuilds and tests the analytical layers.</p>
+      </div>
+    </section>
+
+    <section id="capabilities" class="wrapper style1 align-center section-pad muted">
+      <div class="inner">
+        <p class="eyebrow">02 · Evidence across roles</p>
+        <h2>Engineering controls connected to business questions.</h2>
+        <div class="capability-grid">
+          <article><span class="meta">Data engineering</span><h3>Reliable ingestion</h3><p>Versioned schemas, hashed manifests, exact source reconciliation, idempotent loading, and reason-coded quarantine.</p></article>
+          <article><span class="meta">Analytics engineering</span><h3>Reusable marts</h3><p>Documented grain, star-schema dimensions and facts, explicit service-level logic, and tested transformations.</p></article>
+          <article><span class="meta">Business intelligence</span><h3>Governed measures</h3><p>A PostgreSQL-backed semantic model with explicit DAX measures and report views tied to curated tables.</p></article>
+          <article><span class="meta">Customer insights</span><h3>Demand patterns</h3><p>Segment, channel, category, product, promotion, and margin perspectives for a synthetic omnichannel business.</p></article>
+          <article><span class="meta">Operations</span><h3>Delivery performance</h3><p>Store, driver, fulfillment, delivery-cycle, and on-time service views derived from ordered lifecycle events.</p></article>
+          <article><span class="meta">Process improvement</span><h3>Pipeline health</h3><p>Batch completeness, freshness, row dispositions, reconciliation, and test outcomes are modeled as decision evidence.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="report" class="wrapper style1 section-pad dark-panel">
+      <div class="inner report-layout">
+        <div>
+          <p class="eyebrow">03 · Power BI Desktop</p>
+          <h2>Four views, one governed semantic model.</h2>
+          <p>The report is generated as source-controlled PBIP, PBIR, and TMDL files. It is designed for local Power BI Desktop authoring and refresh; it is not presented as a public Power BI Service deployment.</p>
+          <div class="model-card">
+            <h3>Semantic-model evidence</h3>
+            <div class="model-stats"><span><b>9</b>tables</span><span><b>10</b>relationships</span><span><b>17</b>DAX measures</span><span><b>10</b>visuals</span></div>
+          </div>
+        </div>
+        <div class="report-pages">
+          <article><h3>Executive Overview</h3><p>Sales, gross margin, channel mix, and trend measures for management-level monitoring.</p></article>
+          <article><h3>Delivery Operations</h3><p>Delivery volume, service performance, store comparisons, cycle time, and detailed fulfillment records.</p></article>
+          <article><h3>Customer &amp; Product Insights</h3><p>Segment sales, category margin, brand detail, and product/customer analytical cuts.</p></article>
+          <article><h3>Pipeline Audit</h3><p>Warehouse reconciliation and pipeline-health controls presented alongside analytical outputs.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="validation" class="wrapper style1 align-center section-pad">
+      <div class="inner">
+        <p class="eyebrow">04 · Validation</p>
+        <h2>Evidence is generated only after gates pass.</h2>
+        <p class="case-intro">The portfolio claims below are tied to the verified local checkpoint rather than estimated scale or implied production use.</p>
+        <ul class="validation-table" aria-label="Verified project controls">
+          <li><span>Physical source-row reconciliation</span><b>670,771 loaded</b></li>
+          <li><span>Transformation build</span><b>24 dbt models</b></li>
+          <li><span>Transformation quality</span><b>69 dbt tests passed</b></li>
+          <li><span>Quarantine evidence</span><b>Reason-coded and retained</b></li>
+          <li><span>Orchestration</span><b>8-gate Airflow workflow</b></li>
+          <li><span>Power BI source</span><b>PBIP validated locally</b></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="boundaries" class="wrapper style1 align-center section-pad dark-panel">
+      <div class="inner">
+        <p class="eyebrow">05 · Honest boundaries</p>
+        <h2>What this project does—and does not—claim.</h2>
+        <div class="boundary-box">
+          <h3>Portfolio engineering environment</h3>
+          <ul>
+            <li>Every customer, order, product, store, driver, promotion, and delivery record is deterministic and synthetic.</li>
+            <li>The stack runs locally with PostgreSQL, dbt Core, Apache Airflow, Docker Desktop, and Power BI Desktop.</li>
+            <li>No private research, employer, service-user, or personally identifiable data is included or published.</li>
+            <li>The project demonstrates comparable workflow skills; it does not claim production, cloud, SAP, Oracle, SQL Server, or proprietary consumer-intelligence experience.</li>
+            <li>Synthetic KPI values are engineering controls, not observed business performance, adoption, savings, or revenue impact.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrapper style1 align-center section-pad case-cta">
+      <div class="inner">
+        <p class="eyebrow">Next project conversation</p>
+        <h2>Interested in the reasoning behind the pipeline?</h2>
+        <p>I can walk through the data contracts, quality scenarios, dimensional model, orchestration gates, and Power BI handoff.</p>
+        <ul class="actions special"><li><a class="button primary large" href="mailto:almashah@mcmaster.ca">Contact me</a></li><li><a class="button large" href="../../index.html#work">Explore more work</a></li></ul>
+      </div>
+    </section>
+
+    <footer class="wrapper style1 align-center"><div class="inner"><p>© 2026 Heider Al Mashalah · <a href="../../index.html">Portfolio home</a></p></div></footer>
+  </main>
+  <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/jquery.scrollex.min.js"></script><script src="../../assets/js/jquery.scrolly.min.js"></script><script src="../../assets/js/browser.min.js"></script><script src="../../assets/js/breakpoints.min.js"></script><script src="../../assets/js/util.js"></script><script src="../../assets/js/main.js"></script>
+</body>
+</html>
