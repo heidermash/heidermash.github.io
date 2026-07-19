@@ -62,34 +62,23 @@
       <div class="inner">
         <p class="eyebrow">03 · Data products &amp; ETL</p>
         <h2>From official records to governed, decision-ready data.</h2>
-        <p class="section-intro">Two independent data products: public open-data ingestion and analysis, and a synthetic, fully governed ELT and BI pipeline.</p>
-      </div>
-      <div class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in">
-        <div class="content">
-          <p class="meta">Official Toronto Open Data</p>
-          <h3>Toronto Urban Freight Analytics</h3>
-          <p>A reproducible neighbourhood-screening workflow built from official Toronto Open Data—covering ingestion, schema standardization, geocoding, dimensional outputs, structural validation, and an interactive planning interface.</p>
-          <div class="metrics"><span><b>567,744</b> official records</span><span><b>158</b> neighbourhoods</span><span><b>0</b> structural issues</span></div>
-          <ul class="actions"><li><a href="https://toronto-freight-dashboard.onrender.com/" target="_blank" rel="noreferrer" class="button">Open live data product ↗</a></li></ul>
-        </div>
-        <div class="image project-visual" role="img" aria-label="Abstract urban freight data visualization"><div class="map-grid"><b>ETL</b><span>clean</span><span>validate</span><span>model</span><span>deliver</span></div></div>
-      </div>
-      <div class="spotlight style1 orient-left content-align-left image-position-center onscroll-image-fade-in omnichannel-spotlight">
-        <div class="content">
-          <p class="meta">Deterministic synthetic data</p>
-          <h3>Omnichannel Retail &amp; Last-Mile Delivery ELT</h3>
-          <p>A fully automated, local-first ELT portfolio platform using deterministic synthetic retail and delivery data. Python, PostgreSQL, dbt Core, Airflow, Docker, and Power BI Desktop produce governed marts, tested pipeline evidence, executive and operational analysis, and a geospatial store-performance view.</p>
-          <div class="metrics"><span><b>670,771</b> synthetic source rows</span><span><b>24</b> dbt models / 69 tests</span><span><b>5</b> Power BI pages / 12 visuals</span><span><b>17</b> DAX measures</span></div>
-          <ul class="actions"><li><a href="projects/omnichannel-retail-elt/dashboard/" class="button primary">Open interactive dashboard</a></li><li><a href="projects/omnichannel-retail-elt/" class="button">View case study</a></li></ul>
-        </div>
-        <div class="image pipeline-visual" role="img" aria-label="Local ELT pipeline from synthetic sources through PostgreSQL, dbt, Airflow, and Power BI Desktop">
-          <div class="pipeline-board">
-            <p>Local-first ELT</p>
-            <span><b>01</b> Synthetic sources</span>
-            <span><b>02</b> PostgreSQL</span>
-            <span><b>03</b> dbt marts</span>
-            <span><b>04</b> Power BI</span>
-          </div>
+        <p class="section-intro">Two independent data products: a synthetic, fully governed ELT and BI pipeline, and public open-data ingestion and analysis.</p>
+        <div class="data-products-grid">
+          <article class="data-product-card omni-card">
+            <p class="meta">Deterministic synthetic data</p>
+            <h3>Omnichannel Retail &amp; Last-Mile Delivery ELT</h3>
+            <p>A fully automated, local-first ELT portfolio platform using deterministic synthetic retail and delivery data. Python, PostgreSQL, dbt Core, Airflow, Docker, and Power BI Desktop produce governed marts, tested pipeline evidence, executive and operational analysis, and a geospatial store-performance view.</p>
+            <div class="metrics"><span><b>670,771</b> synthetic source rows</span><span><b>24</b> dbt models / 69 tests</span><span><b>5</b> Power BI pages / 12 visuals</span><span><b>17</b> DAX measures</span></div>
+            <ul class="actions"><li><a href="projects/omnichannel-retail-elt/dashboard/" class="button primary">Open interactive dashboard</a></li><li><a href="projects/omnichannel-retail-elt/" class="button">View case study</a></li></ul>
+          </article>
+          <article class="data-product-card toronto-card">
+            <p class="meta">Official Toronto Open Data</p>
+            <h3>Toronto Urban Freight Analytics</h3>
+            <p>A reproducible neighbourhood-screening workflow built from official Toronto Open Data—covering ingestion, schema standardization, geocoding, dimensional outputs, structural validation, and an interactive planning interface.</p>
+            <div class="metrics"><span><b>567,744</b> official records</span><span><b>158</b> neighbourhoods</span><span><b>0</b> structural issues</span></div>
+            <ul class="actions"><li><a href="https://toronto-freight-dashboard.onrender.com/" target="_blank" rel="noreferrer" class="button">Open live dashboard ↗</a></li></ul>
+            <p class="card-note">Hosted on Render's free tier—an idle service can take about a minute to wake.</p>
+          </article>
         </div>
       </div>
     </section>
