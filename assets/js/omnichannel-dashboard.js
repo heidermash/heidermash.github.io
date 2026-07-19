@@ -3,7 +3,7 @@
 
   var DATA_URL = '../../../assets/data/omnichannel-dashboard.json';
   var colors = ['#557f70', '#9ab31d', '#d18b32', '#6d78ae', '#a85f5f', '#388c9a', '#7b6654', '#8b6da0'];
-  var state = { data: null, year: 'all', channel: 'all', view: 'overview' };
+  var state = { data: null, year: 'all', channel: 'all', view: 'overview', map: null, mapLayer: null };
   var money = new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 });
   var compactMoney = new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD', notation: 'compact', maximumFractionDigits: 1 });
   var number = new Intl.NumberFormat('en-CA', { maximumFractionDigits: 0 });
@@ -197,13 +197,57 @@
     setText('ontime-summary', onTimeSorted[0] ? titleCase(onTimeSorted[0].label) + ' has the highest selected on-time rate at ' + formatPercent(onTimeSorted[0].on_time_rate) + '.' : 'No matching delivery records.');
     setText('cycle-summary', cycleSorted[0] ? titleCase(cycleSorted[0].label) + ' has the shortest selected average cycle at ' + decimal.format(cycleSorted[0].average_delivery_cycle_minutes) + ' minutes.' : 'No matching delivery records.');
 
-    var stores = aggregate(state.data.store_delivery.filter(matches), 'store', ['delivered_orders', 'on_time_deliveries'], 'average_delivery_cycle_minutes', 'delivered_orders')
+    var allStores = aggregate(state.data.store_delivery.filter(matches), 'store', ['delivered_orders', 'on_time_deliveries'], 'average_delivery_cycle_minutes', 'delivered_orders')
       .map(function (row) { row.on_time_rate = percent(row.on_time_deliveries, row.delivered_orders); return row; })
+      .sort(function (a, b) { return b.on_time_rate - a.on_time_rate; });
+    var stores = allStores
       .filter(function (row) { return row.delivered_orders >= 100; })
-      .sort(function (a, b) { return b.on_time_rate - a.on_time_rate; })
       .slice(0, 10);
+    renderStoreMap(allStores);
     drawBars(byId('store-performance'), stores.map(function (row) { return { label: row.label, value: row.on_time_rate }; }), formatPercent);
     renderTable('store-table-body', stores.map(function (row) { return [row.label, number.format(row.delivered_orders), number.format(row.on_time_deliveries), formatPercent(row.on_time_rate), decimal.format(row.average_delivery_cycle_minutes) + ' min']; }));
+  }
+
+  function markerColor(rate) {
+    if (rate >= 70) return '#4d8b61';
+    if (rate >= 65) return '#d18b32';
+    return '#a85f5f';
+  }
+
+  function renderStoreMap(stores) {
+    var container = byId('store-map');
+    if (!window.L) {
+      container.textContent = 'The basemap library could not be loaded. Store performance remains available in the chart and table below.';
+      setText('store-map-summary', 'Map unavailable; no analytical data was lost.');
+      return;
+    }
+    if (!state.map) {
+      state.map = window.L.map(container, { scrollWheelZoom: false }).setView([43.55, -79.62], 8);
+      window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(state.map);
+      state.mapLayer = window.L.layerGroup().addTo(state.map);
+    }
+    state.mapLayer.clearLayers();
+    var locations = new Map(state.data.store_locations.map(function (row) { return [row.store, row]; }));
+    var bounds = [];
+    stores.forEach(function (store) {
+      var location = locations.get(store.label);
+      if (!location) return;
+      var radius = Math.max(7, Math.min(20, 5 + Math.sqrt(store.delivered_orders) / 5));
+      var marker = window.L.circleMarker([location.latitude, location.longitude], { radius: radius, color: '#fff', weight: 2, fillColor: markerColor(store.on_time_rate), fillOpacity: .88 });
+      var popup = document.createElement('div');
+      var heading = document.createElement('strong'); heading.textContent = store.label;
+      var detail = document.createElement('p'); detail.textContent = location.city + ' · fictional approximate location';
+      var performance = document.createElement('p'); performance.textContent = number.format(store.delivered_orders) + ' delivered · ' + formatPercent(store.on_time_rate) + ' on time · ' + decimal.format(store.average_delivery_cycle_minutes) + ' min average cycle';
+      popup.append(heading, detail, performance);
+      marker.bindPopup(popup).addTo(state.mapLayer);
+      bounds.push([location.latitude, location.longitude]);
+    });
+    if (bounds.length) state.map.fitBounds(bounds, { padding: [24, 24], maxZoom: 10 });
+    state.map.invalidateSize(false);
+    setText('store-map-summary', stores.length + ' fictional stores across five Ontario cities. Markers respond to the selected year and channel; no customer or address-level geography is published.');
   }
 
   function renderCustomer() {
@@ -296,6 +340,9 @@
       }),
       store_delivery: raw.store_delivery.map(function (row) {
         return { month: row[0] + '-01-01', channel: row[1], store: row[2], delivered_orders: row[3], on_time_deliveries: row[4], average_delivery_cycle_minutes: row[5] };
+      }),
+      store_locations: raw.store_locations.map(function (row) {
+        return { store: row[0], city: row[1], latitude: row[2], longitude: row[3] };
       })
     };
   }
